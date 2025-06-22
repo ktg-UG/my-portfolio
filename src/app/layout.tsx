@@ -3,7 +3,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header"; // ★ この行を追加
+import Header from "@/components/Header";
+import BackgroundSpheres from "@/components/BackgroundSpheres";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
+        <BackgroundSpheres />
         <Header />
         <main className={inter.className}>
           {children}

@@ -28,7 +28,6 @@ export default function Node({ id, label, color, size, position, url, nodeType, 
   return (
     <Link
       href={url}
-      // ▼▼▼ このclassNameのブロックを修正しました ▼▼▼
       className={`
         absolute cursor-pointer group
         transition-all duration-300 ease-in-out
