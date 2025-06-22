@@ -24,3 +24,19 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@keyframes marching-ants {
+  to {
+    stroke-dashoffset: -32;
+  }
+}
+
+.line-path {
+  transition: stroke 0.3s ease-in-out, stroke-width 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  animation: marching-ants 1.5s linear infinite;
+  animation-play-state: paused;
+}
+
+.line-path.animated {
+  animation-play-state: running;
+}

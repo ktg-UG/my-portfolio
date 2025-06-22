@@ -20,8 +20,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
-        <Header /> {/* ★ この行を追加 */}
-        <main>{children}</main> {/* childrenをmainタグで囲っておくと意味的にも良いです */}
+        <Header />
+        <main className={inter.className}>
+          {children}
+        </main>
       </body>
     </html>
   );
