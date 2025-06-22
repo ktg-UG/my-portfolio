@@ -11,9 +11,10 @@ const CONTAINER_HEIGHT = 600;
 export default function Home() {
   const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
   const leaveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   const nodes = [
-    { id: 'profile', parentId: null, label: "プロフィール", color: "#d1d5db", size: 120, position: { x: 0.5, y: 0.5 }, url: "/profile", nodeType: 'primary' },
+    { id: 'profile', parentId: null, label: "プロフィール", color: "#6b7280", size: 120, position: { x: 0.5, y: 0.5 }, url: "/profile", nodeType: 'primary' },
     { id: 'dev', parentId: 'profile', label: "個人開発", color: "#f472b6", size: 100, position: { x: 0.5, y: 0.15 }, url: "/development", nodeType: 'primary' },
     { id: 'research', parentId: 'profile', label: "研究", color: "#8b5cf6", size: 100, position: { x: 0.88, y: 0.5 }, url: "/research", nodeType: 'primary' },
     { id: 'intern', parentId: 'profile', label: "インターン", color: "#22c55e", size: 100, position: { x: 0.7, y: 0.85 }, url: "/internship", nodeType: 'primary' },
@@ -26,6 +27,13 @@ export default function Home() {
     { id: 'atcoder', parentId: 'others', label: "AtCoder", color: "#3b82f6", size: 70, position: { x: 0.3, y: 1.05 }, url: "/atcoder", nodeType: 'secondary' },
     { id: 'kaggle', parentId: 'others', label: "Kaggle", color: "#3b82f6", size: 70, position: { x: 0.5, y: 1.05 }, url: "/kaggle", nodeType: 'secondary' },
   ] as const;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsMounted(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -45,8 +53,11 @@ export default function Home() {
   const handleMouseLeave = () => {
     leaveTimerRef.current = setTimeout(() => {
       setHoveredNodeId(null);
-    }, 3000);
+    }, 1000);
   };
+
+  const profileNodePosition = nodes.find(n => n.id === 'profile')?.position;
+  if (!profileNodePosition) return null;
 
   return (
     <div className="flex items-center justify-center h-[calc(100vh+4rem)]">
@@ -55,51 +66,66 @@ export default function Home() {
         style={{ width: `${CONTAINER_WIDTH}px`, height: `${CONTAINER_HEIGHT}px` }}
       >
         <svg className="absolute top-0 left-0 w-full h-full">
-          {nodes.map((node) => {
-            // 親ノードがなければ線は描画しない
+          {nodes.map((node, index) => { 
             const parentNode = nodes.find(p => p.id === node.parentId);
             if (!parentNode) return null;
 
-            // アクティブな親グループを特定
             const hoveredNode = nodes.find(n => n.id === hoveredNodeId);
             const activeParentId = hoveredNode?.nodeType === 'primary' ? hoveredNode.id : hoveredNode?.parentId;
             
-            // 線の表示/非表示を決定
             const isPrimaryLine = parentNode.id === 'profile';
             const isSecondaryGroupVisible = node.parentId === activeParentId;
             const isVisible = isPrimaryLine || isSecondaryGroupVisible;
 
-            const isLineHighlighted = hoveredNodeId === node.id;
+            const isLineHighlighted = hoveredNodeId === node.id || node.id === hoveredNode?.parentId;
+
+            const startX = parentNode.position.x * CONTAINER_WIDTH;
+            const startY = parentNode.position.y * CONTAINER_HEIGHT;
+            const endX = isMounted ? node.position.x * CONTAINER_WIDTH : startX;
+            const endY = isMounted ? node.position.y * CONTAINER_HEIGHT : startY;
+            const lineDelay = `${(index * 80) +  500}ms`;
 
             return (
               <line
                 key={`line-${node.id}-to-${parentNode.id}`}
-                x1={parentNode.position.x * CONTAINER_WIDTH}
-                y1={parentNode.position.y * CONTAINER_HEIGHT}
-                x2={node.position.x * CONTAINER_WIDTH}
-                y2={node.position.y * CONTAINER_HEIGHT}
+                x1={startX}
+                y1={startY}
+                x2={endX}
+                y2={endY}
                 stroke={isLineHighlighted ? "#1f2937" : "white"}
                 strokeWidth={isLineHighlighted ? "3" : "2"}
                 strokeDasharray="8 8" 
+                
                 className={`
-                  line-path transition-opacity duration-300
+                  line-path 
                   [filter:drop-shadow(0_2px_1px_rgba(0,0,0,0.4))]
                   ${isLineHighlighted ? 'animated' : ''}
                   ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}
                 `}
+                style={{
+                  transition: `
+                    x2 0.5s ease-in-out ${lineDelay}, 
+                    y2 0.5s ease-in-out ${lineDelay}
+                  `,
+                  transitionDelay: lineDelay,
+                }}
               />
             );
           })}
         </svg>
 
-        {nodes.map((node) => {
+        {nodes.map((node, index) => {
           const hoveredNode = nodes.find(n => n.id === hoveredNodeId);
           const activeParentId = hoveredNode?.nodeType === 'primary' ? hoveredNode.id : hoveredNode?.parentId;
           
-          const isVisible = 
-            node.nodeType === 'primary' || 
-            node.parentId === null || 
-            node.parentId === activeParentId;
+          let isVisible = node.nodeType === 'primary' || node.parentId === null || node.parentId === activeParentId;
+          if (node.id === 'profile') isVisible = true;
+
+          const positionToRender = !isMounted && node.nodeType === 'primary' && node.id !== 'profile' 
+            ? profileNodePosition 
+            : node.position;
+
+          const finalVisibility = isMounted ? isVisible : (node.id === 'profile');
 
           return (
             <Node
@@ -108,10 +134,11 @@ export default function Home() {
               label={node.label}
               color={node.color}
               size={node.size}
-              position={node.position}
+              position={positionToRender}
               url={node.url}
               nodeType={node.nodeType}
-              isVisible={isVisible}
+              isVisible={finalVisibility}
+              transitionDelay={`${index * 80}ms`}
               onMouseEnter={() => handleMouseEnter(node.id)}
               onMouseLeave={handleMouseLeave}
             />

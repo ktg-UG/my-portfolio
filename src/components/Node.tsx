@@ -11,11 +11,12 @@ type Props = {
   url: string;
   nodeType: 'primary' | 'secondary';
   isVisible: boolean;
+  transitionDelay: string;
   onMouseEnter: () => void;
   onMouseLeave: () => void;
 };
 
-export default function Node({ id, label, color, size, position, url, nodeType, isVisible, onMouseEnter, onMouseLeave }: Props) {
+export default function Node({ id, label, color, size, position, url, nodeType, isVisible, transitionDelay,  onMouseEnter, onMouseLeave }: Props) {
   const sphereStyle = {
     background: `radial-gradient(circle at 33% 33%, rgba(255, 255, 255, 0.4), ${color} 85%)`,
     boxShadow: `
@@ -25,12 +26,14 @@ export default function Node({ id, label, color, size, position, url, nodeType, 
     `,
   };
 
+  const durationClass = nodeType === 'primary' ? 'duration-500' : '';
+
   return (
     <Link
       href={url}
       className={`
         absolute cursor-pointer group
-        transition-all duration-300 ease-in-out
+        transition-all ${durationClass} ease-out
         ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}
       `}
       style={{
@@ -39,6 +42,7 @@ export default function Node({ id, label, color, size, position, url, nodeType, 
         top: `${position.y * 100}%`,
         left: `${position.x * 100}%`,
         transform: 'translate(-50%, -50%)',
+        transitionDelay: isVisible ? nodeType === 'primary' ? transitionDelay : '0ms' : '0ms',
       }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}

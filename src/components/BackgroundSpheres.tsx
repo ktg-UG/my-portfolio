@@ -13,14 +13,14 @@ export default function BackgroundSpheres() {
     <div className="fixed inset-0 -z-10 overflow-hidden">
       {/* 球体１ */}
       <div
-        className="absolute w-38 h-38 rounded-full opacity-40"
+        className="absolute w-36 h-36 rounded-full opacity-40"
         style={{
           ...sphereBaseStyle,
           // ★ background に radial-gradient を指定
           background: `radial-gradient(circle at 33% 33%, #fecdd3, #f9a8d4)`,
           top: '20%',
           left: '85%',
-          animation: 'float 8s ease-in-out infinite',
+          animation: 'float 8s ease-in-out infinite 0.5s',
         }}
       />
       {/* 球体２ */}
@@ -31,7 +31,7 @@ export default function BackgroundSpheres() {
           background: `radial-gradient(circle at 33% 33%, #dbeafe, #93c5fd)`,
           top: '30%',
           left: '5%',
-          animation: 'float 10s ease-in-out infinite 2s', 
+          animation: 'float 12s ease-in-out infinite 2s', 
         }}
       />
       {/* 球体３ */}
@@ -42,7 +42,7 @@ export default function BackgroundSpheres() {
           background: `radial-gradient(circle at 33% 33%, #fef3c7, #fcd34d)`,
           top: '70%',
           left: '25%',
-          animation: 'float 9s ease-in-out infinite 1s',
+          animation: 'float 10s ease-in-out infinite 1s',
         }}
       />
     {/* 球体4 */}
@@ -53,29 +53,29 @@ export default function BackgroundSpheres() {
         background: `radial-gradient(circle at 33% 33%,rgb(131, 235, 178),rgb(26, 236, 110))`,
         top: '85%',
         left: '85%',
-        animation: 'float 9s ease-in-out infinite 1s',
+        animation: 'float 7s ease-in-out infinite 3s',
         }}
     />
     {/* 球体5 */}
     <div
-        className="absolute w-50 h-50 rounded-full opacity-40"
+        className="absolute w-52 h-52 rounded-full opacity-40"
         style={{
         ...sphereBaseStyle,
         background: `radial-gradient(circle at 33% 33%,rgb(97, 246, 174),rgb(17, 233, 236))`,
         top: '3%',
         left: '50%',
-        animation: 'float 9s ease-in-out infinite 1s',
+        animation: 'float 11s ease-in-out infinite 1.5s',
         }}
     />
     {/* 球体6 */}
     <div
-        className="absolute w-55 h-55 rounded-full opacity-40"
+        className="absolute w-56 h-56 rounded-full opacity-40"
         style={{
         ...sphereBaseStyle,
         background: `radial-gradient(circle at 33% 33%,rgb(242, 201, 117),rgb(234, 154, 17))`,
         top: '45%',
         left: '55%',
-        animation: 'float 9s ease-in-out infinite 1s',
+        animation: 'float 9s ease-in-out infinite 0s',
         }}
     />
     {/* 球体6 */}
@@ -86,10 +86,10 @@ export default function BackgroundSpheres() {
         background: `radial-gradient(circle at 33% 33%, #fecdd3, #f9a8d4)`,
         top: '85%',
         left: '5%',
-        animation: 'float 9s ease-in-out infinite 1s',
+        animation: 'float 6s ease-in-out infinite 2.5s',
         }}
     />
-    {/* 球体6 */}
+    {/* 球体8 */}
     <div
         className="absolute w-10 h-10 rounded-full opacity-40"
         style={{
@@ -97,7 +97,7 @@ export default function BackgroundSpheres() {
         background: `radial-gradient(circle at 33% 33%, #dbeafe, #93c5fd)`,
         top: '90%',
         left: '50%',
-        animation: 'float 9s ease-in-out infinite 1s',
+        animation: 'float 13s ease-in-out infinite 4s',
         }}
     />
     </div>
