@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
-// ★ 変更点: Google Fontsをインポート
+// 以前のフォント設定はそのまま活かします
 import { Inter, Noto_Sans_JP } from "next/font/google";
+// ★ 修正点: globals.cssがインポートされていることを確認
 import "./globals.css";
+// ★ 修正点: 背景コンポーネントをインポート
+import BackgroundSpheres from "@/components/BackgroundSpheres";
 
-// ★ 変更点: フォント設定を追加
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
 const notoSansJp = Noto_Sans_JP({ subsets: ["latin"], weight: ["400", "700"], variable: '--font-noto-sans-jp' });
 
@@ -19,8 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      {/* ★ 変更点: フォント変数をbodyに適用 */}
-      <body className={`${inter.variable} ${notoSansJp.variable} font-sans`}>{children}</body>
+      <body className={`${inter.variable} ${notoSansJp.variable} font-sans`}>
+        {/* ★ 修正点: 背景コンポーネントをここに配置 */}
+        <BackgroundSpheres />
+        {/* メインのコンテンツは背景の上に表示される */}
+        <main className="relative z-10">{children}</main>
+      </body>
     </html>
   );
 }

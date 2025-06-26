@@ -6,19 +6,20 @@ import Node from "@/components/Node";
 const CONTAINER_WIDTH = 800;
 const CONTAINER_HEIGHT = 600;
 
+// ★ 変更点: 各ノードに `color` プロパティを追加
 const nodes = [
-  { id: 'profile', parentId: null, label: "PROFILE", size: 120, position: { x: 0.5, y: 0.5 }, url: "/profile", nodeType: 'primary' },
-  { id: 'dev', parentId: 'profile', label: "DEVELOPMENT", size: 100, position: { x: 0.5, y: 0.15 }, url: "/development", nodeType: 'primary' },
-  { id: 'research', parentId: 'profile', label: "RESEARCH", size: 100, position: { x: 0.88, y: 0.5 }, url: "/research", nodeType: 'primary' },
-  { id: 'intern', parentId: 'profile', label: "INTERNSHIP", size: 100, position: { x: 0.7, y: 0.85 }, url: "/internship", nodeType: 'primary' },
-  { id: 'others', parentId: 'profile', label: "OTHERS", size: 100, position: { x: 0.3, y: 0.85 }, url: "/others", nodeType: 'primary' },
-  { id: 'tech', parentId: 'profile', label: "TECH", size: 100, position: { x: 0.12, y: 0.5 }, url: "/tech", nodeType: 'primary' },
-  { id: 'court-system', parentId: 'dev', label: "Court Reservation", size: 70, position: { x: 0.3, y: 0.05 }, url: "/development/court-reservation-system", nodeType: 'secondary' },
-  { id: 'vocab-app', parentId: 'dev', label: "Vocab App", size: 70, position: { x: 0.5, y: -0.05 }, url: "/development/vocab-app", nodeType: 'secondary' },
-  { id: 'nhk-scrape', parentId: 'dev', label: "News Scraper", size: 70, position: { x: 0.7, y: 0.05 }, url: "/development/nhk-news-scraping", nodeType: 'secondary' },
-  { id: 'blog', parentId: 'others', label: "Blog", size: 70, position: { x: 0.1, y: 0.85 }, url: "/blog", nodeType: 'secondary' },
-  { id: 'atcoder', parentId: 'others', label: "AtCoder", size: 70, position: { x: 0.3, y: 1.05 }, url: "/atcoder", nodeType: 'secondary' },
-  { id: 'kaggle', parentId: 'others', label: "Kaggle", size: 70, position: { x: 0.5, y: 1.05 }, url: "/kaggle", nodeType: 'secondary' },
+  { id: 'profile', parentId: null, label: "PROFILE", size: 120, position: { x: 0.5, y: 0.5 }, url: "/profile", nodeType: 'primary', color: '#cbd5e1' },
+  { id: 'dev', parentId: 'profile', label: "DEVELOPMENT", size: 100, position: { x: 0.5, y: 0.15 }, url: "/development", nodeType: 'primary', color: '#f472b6' },
+  { id: 'research', parentId: 'profile', label: "RESEARCH", size: 100, position: { x: 0.88, y: 0.5 }, url: "/research", nodeType: 'primary', color: '#a78bfa' },
+  { id: 'intern', parentId: 'profile', label: "INTERNSHIP", size: 100, position: { x: 0.7, y: 0.85 }, url: "/internship", nodeType: 'primary', color: '#4ade80' },
+  { id: 'others', parentId: 'profile', label: "OTHERS", size: 100, position: { x: 0.3, y: 0.85 }, url: "/others", nodeType: 'primary', color: '#60a5fa' },
+  { id: 'tech', parentId: 'profile', label: "TECH", size: 100, position: { x: 0.12, y: 0.5 }, url: "/tech", nodeType: 'primary', color: '#facc15' },
+  { id: 'court-system', parentId: 'dev', label: "Court Reservation", size: 70, position: { x: 0.3, y: 0.05 }, url: "/development/court-reservation-system", nodeType: 'secondary', color: '#f9a8d4' },
+  { id: 'vocab-app', parentId: 'dev', label: "Vocab App", size: 70, position: { x: 0.5, y: -0.05 }, url: "/development/vocab-app", nodeType: 'secondary', color: '#f9a8d4' },
+  { id: 'nhk-scrape', parentId: 'dev', label: "News Scraper", size: 70, position: { x: 0.7, y: 0.05 }, url: "/development/nhk-news-scraping", nodeType: 'secondary', color: '#f9a8d4' },
+  { id: 'blog', parentId: 'others', label: "Blog", size: 70, position: { x: 0.1, y: 0.85 }, url: "/blog", nodeType: 'secondary', color: '#93c5fd' },
+  { id: 'atcoder', parentId: 'others', label: "AtCoder", size: 70, position: { x: 0.3, y: 1.05 }, url: "/atcoder", nodeType: 'secondary', color: '#93c5fd' },
+  { id: 'kaggle', parentId: 'others', label: "Kaggle", size: 70, position: { x: 0.5, y: 1.05 }, url: "/kaggle", nodeType: 'secondary', color: '#93c5fd' },
 ] as const;
 
 
@@ -85,10 +86,13 @@ export default function Home() {
                 y1={startY}
                 x2={endX}
                 y2={endY}
-                stroke={isLineHighlighted ? "#3b82f6" : "#cbd5e1"}
-                strokeWidth={isLineHighlighted ? "2" : "1"}
-                className={`transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+                // ★ 修正点: アニメーション用のクラスを追加
+                className={`line-path transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${isLineHighlighted ? 'animated' : ''}`}
                 style={{
+                  stroke: isLineHighlighted ? "#3b82f6" : "#cbd5e1",
+                  strokeWidth: isLineHighlighted ? "2" : "1",
+                  // ★ 修正点: 線を破線にするためのスタイルを追加
+                  strokeDasharray: "8 8",
                   transitionDelay: lineDelay,
                   transitionProperty: 'stroke, stroke-width, opacity',
                 }}
@@ -102,14 +106,12 @@ export default function Home() {
           const isParentHovered = hoveredNodeId === node.parentId;
           const isChildOfHovered = node.parentId === hoveredNodeId;
 
-          // ★ 変更点: `|| node.id === 'profile'` を削除
           const isActive = hoveredNodeId ? (isNodeHovered || isParentHovered || isChildOfHovered) : (node.nodeType === 'primary');
           
-          // ★ 変更点: `node.id === 'profile' ||` を削除
           let isVisible = node.nodeType === 'primary' || (node.parentId && node.parentId === activeParentId);
-          if (node.id === 'profile') isVisible = true; // 'profile' は常に表示
+          if (node.id === 'profile') isVisible = true;
           if (!hoveredNodeId && node.nodeType === 'secondary') {
-             isVisible = false;
+              isVisible = false;
           }
 
           const initialPosition = (node.parentId && nodes.find(p => p.id === node.parentId)?.position) || profileNodePosition;
@@ -123,6 +125,7 @@ export default function Home() {
               size={node.size}
               position={positionToRender}
               url={node.url}
+              color={node.color} // ★ 変更点: colorプロパティを渡す
               isVisible={isMounted ? isVisible : (node.id === 'profile')}
               isActive={isActive}
               isHovered={isNodeHovered}
