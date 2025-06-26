@@ -1,24 +1,34 @@
-@import "tailwindcss";
+/* src/app/globals.css */
+
+/* ★ 修正点: Tailwind CSS v3の記法に変更 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* ドットの色をCSS変数として定義 */
+  --dot-color: #e5e7eb; /* tailwind's gray-200 */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    /* ダークモード時のドットの色 */
+    --dot-color: #374151; /* tailwind's gray-700 */
   }
 }
 
 body {
-  background-color: #f9fafb; /* bg-gray-50 と同じ色 */
-
-  background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
-  background-size: 20px 20px;
-
+  background-color: var(--background); 
   color: var(--foreground);
+
+  /* ドット柄の背景 */
+  background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+  background-size: 20px 20px;
+  
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -30,7 +40,6 @@ body {
 
 .line-path {
   animation: marching-ants 1.5s linear infinite;
-
   animation-play-state: paused;
 }
 
