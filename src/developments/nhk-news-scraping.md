@@ -1,5 +1,5 @@
 ---
-title: 'コート予約システム'
+title: 'NHK-News-Scraping'
 publishedAt: '2024-05-15'
 imageUrl: '/images/development-placeholder.png'
 tags: ['Next.js', 'TypeScript', 'Firebase', 'Tailwind CSS']

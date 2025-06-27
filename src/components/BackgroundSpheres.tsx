@@ -1,7 +1,5 @@
-// src/components/BackgroundSpheres.tsx
-
 export default function BackgroundSpheres() {
-  // 各球体のスタイルを定義
+  // 各球体に立体感をもたせる定義
   const sphereBaseStyle = {
     boxShadow: `
       inset 2px 2px 5px rgba(255, 255, 255, 0.4), 
@@ -16,7 +14,6 @@ export default function BackgroundSpheres() {
         className="absolute w-36 h-36 rounded-full opacity-40"
         style={{
           ...sphereBaseStyle,
-          // ★ background に radial-gradient を指定
           background: `radial-gradient(circle at 33% 33%, #fecdd3, #f9a8d4)`,
           top: '20%',
           left: '85%',

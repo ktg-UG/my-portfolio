@@ -53,10 +53,11 @@ export default function Home() {
   if (!profileNodePosition) return null;
 
   const hoveredNode = nodes.find(n => n.id === hoveredNodeId);
+  
   const activeParentId = hoveredNode?.nodeType === 'primary' ? hoveredNode.id : hoveredNode?.parentId;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-slate-50">
+    <div className="flex py-36 items-center justify-center min-h-screen">
       <div
         className="relative"
         style={{ width: `${CONTAINER_WIDTH}px`, height: `${CONTAINER_HEIGHT}px` }}
@@ -71,13 +72,12 @@ export default function Home() {
             const isSecondaryGroupVisible = node.parentId === activeParentId;
             const isVisible = isPrimaryLine || isSecondaryGroupVisible;
             
-            const isLineHighlighted = hoveredNodeId && (hoveredNodeId === node.id || hoveredNodeId === node.parentId);
+            const isLineHighlighted = node.id === hoveredNodeId || hoveredNode?.parentId === node.id;
 
             const startX = parentNode.position.x * CONTAINER_WIDTH;
             const startY = parentNode.position.y * CONTAINER_HEIGHT;
             const endX = isMounted ? node.position.x * CONTAINER_WIDTH : startX;
             const endY = isMounted ? node.position.y * CONTAINER_HEIGHT : startY;
-            const lineDelay = `${index * 80 + 500}ms`;
 
             return (
               <line
@@ -86,14 +86,11 @@ export default function Home() {
                 y1={startY}
                 x2={endX}
                 y2={endY}
-                // ★ 修正点: アニメーション用のクラスを追加
                 className={`line-path transition-all duration-300 ${isVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'} ${isLineHighlighted ? 'animated' : ''}`}
                 style={{
                   stroke: isLineHighlighted ? "#3b82f6" : "#cbd5e1",
                   strokeWidth: isLineHighlighted ? "2" : "1",
-                  // ★ 修正点: 線を破線にするためのスタイルを追加
                   strokeDasharray: "8 8",
-                  transitionDelay: lineDelay,
                   transitionProperty: 'stroke, stroke-width, opacity',
                 }}
               />
@@ -119,13 +116,13 @@ export default function Home() {
           
           return (
             <Node
-              key={node.id}
               id={node.id}
               label={node.label}
               size={node.size}
               position={positionToRender}
               url={node.url}
-              color={node.color} // ★ 変更点: colorプロパティを渡す
+              color={node.color}
+              nodeType={node.nodeType}
               isVisible={isMounted ? isVisible : (node.id === 'profile')}
               isActive={isActive}
               isHovered={isNodeHovered}

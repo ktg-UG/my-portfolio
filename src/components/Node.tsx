@@ -7,7 +7,8 @@ type NodeProps = {
   size: number;
   position: { x: number; y: number };
   url: string;
-  color: string; // colorプロパティを受け取る
+  color: string;
+  nodeType: "primary" | "secondary";
   isVisible: boolean;
   isActive: boolean;
   isHovered: boolean;
@@ -20,7 +21,8 @@ const Node = ({
   size,
   position,
   url,
-  color, // propsとして受け取る
+  color,
+  nodeType,
   isVisible,
   isActive,
   isHovered,
@@ -28,8 +30,6 @@ const Node = ({
   onMouseEnter,
 }: NodeProps) => {
 
-  // ★ 変更点: 背景色に合わせて適切な文字色を決定
-  // 黄色(#facc15)と白っぽいグレー(#cbd5e1)の場合は黒文字、それ以外は白文字にする
   const textColorClass = (color === '#facc15' || color === '#cbd5e1') 
     ? 'text-slate-800' // 濃いグレーの文字
     : 'text-white';   // 白色の文字
@@ -47,7 +47,7 @@ const Node = ({
     "duration-300",
     "ease-in-out",
     isVisible ? "opacity-100 scale-100" : "opacity-0 scale-0 pointer-events-none",
-    textColorClass, // ★ 変更点: 上で決定した文字色クラスを適用
+    textColorClass,
     isHovered ? "z-10" : "z-0",
   ].join(" ");
 
@@ -64,12 +64,12 @@ const Node = ({
           padding: '4px',
           top: `calc(${position.y * 100}% - ${size / 2}px)`,
           left: `calc(${position.x * 100}% - ${size / 2}px)`,
-          backgroundColor: color, // ★ 変更点: 背景色をpropsで受け取ったcolorに設定
+          backgroundColor: color,
           transform: `scale(${isHovered ? 1.15 : 1})`,
           boxShadow: isHovered 
             ? '0 10px 25px -5px rgb(0 0 0 / 0.2), 0 8px 10px -6px rgb(0 0 0 / 0.2)' 
             : '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-          transitionDelay: transitionDelay,
+          transitionDelay: nodeType === "primary" ? transitionDelay : "",
           transitionProperty: 'transform, background-color, opacity, box-shadow, top, left',
         }}
       >
