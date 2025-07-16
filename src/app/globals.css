@@ -1,57 +1,20 @@
-/* Tailwind CSS v3の記法に変更 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #171717;
-  --foreground: #ffffff;
-  /* ドットの色をCSS変数として定義 */
-  --dot-color: #e5e7eb; /* tailwind's gray-200 */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-    /* ダークモード時のドットの色 */
-    --dot-color: #374151; /* tailwind's gray-700 */
-  }
+  --background-start-rgb: 2, 8, 24;
+  --background-end-rgb: 5, 15, 44;
 }
 
 body {
-  background-color: var(--background); 
-  color: var(--foreground);
-  
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-@keyframes marching-ants {
-  to {
-    stroke-dashoffset: -32;
-  }
-}
-
-.line-path {
-  animation: marching-ants 1.5s linear infinite;
-  animation-play-state: paused;
-}
-
-.line-path.animated {
-  animation-play-state: running;
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px) scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: translateY(-50px) scale(1.05);
-    opacity: 0.3;
-  }
-  100% {
-    transform: translateY(0px) scale(1);
-    opacity: 0.2;
-  }
+  background: rgb(var(--background-start-rgb));
+  background: linear-gradient(
+    180deg,
+    rgb(var(--background-start-rgb)) 0%,
+    rgb(var(--background-end-rgb)) 100%
+  );
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
 }

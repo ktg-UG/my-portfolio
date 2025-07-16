@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
-import BackgroundSpheres from "@/components/BackgroundSpheres";
 import Header from "@/components/Header";
 
 const inter = Inter({ subsets: ["latin"], variable: '--font-inter' });
@@ -20,7 +19,6 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className={`${inter.variable} ${notoSansJp.variable} font-sans`}>
-        <BackgroundSpheres />
         <Header />
         <main className="relative z-10">{children}</main>
       </body>
